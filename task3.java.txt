@@ -1,0 +1,139 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class task3 {
+    private List<Room> rooms;
+    private List<Reservation> reservations;
+
+    public task3() {
+        this.rooms = new ArrayList<>();
+        this.reservations = new ArrayList<>();
+    }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
+
+    public void makeReservation(Reservation reservation) {
+        reservations.add(reservation);
+    }
+
+    public void searchAvailableRooms(String category) {
+        for (Room room : rooms) {
+            if (room.getCategory().equals(category) &&!room.isReserved()) {
+                System.out.println("Room " + room.getNumber() + " is available");
+            }
+        }
+    }
+
+    public void viewBookingDetails(String reservationId) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getId().equals(reservationId)) {
+                System.out.println("Reservation Details:");
+                System.out.println("Room Number: " + reservation.getRoom().getNumber());
+                System.out.println("Guest Name: " + reservation.getGuest().getName());
+                System.out.println("Check-in Date: " + reservation.getCheckinDate());
+                System.out.println("Check-out Date: " + reservation.getCheckoutDate());
+                System.out.println("Payment Status: " + reservation.getPaymentStatus());
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        HotelReservationSystem hotel = new HotelReservationSystem();
+
+        // Add rooms
+        hotel.addRoom(new Room("Single", 101, false));
+        hotel.addRoom(new Room("Double", 102, false));
+        hotel.addRoom(new Room("Suite", 103, false));
+
+        // Make a reservation
+        Reservation reservation = new Reservation("R001", new Guest("Amrutha"), new Room("Double", 102, true), "2024-06-05", "2024-06-07", "Paid");
+        hotel.makeReservation(reservation);
+
+        // Search available rooms
+        hotel.searchAvailableRooms("Single");
+
+        // View booking details
+        hotel.viewBookingDetails("R001");
+    }
+}
+
+class Room {
+    private String category;
+    private int number;
+    private boolean reserved;
+
+    public Room(String category, int number, boolean reserved) {
+        this.category = category;
+        this.number = number;
+        this.reserved = reserved;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public boolean isReserved() {
+        return reserved;
+    }
+}
+
+class Reservation {
+    private String id;
+    private Guest guest;
+    private Room room;
+    private String checkinDate;
+    private String checkoutDate;
+    private String paymentStatus;
+
+    public Reservation(String id, Guest guest, Room room, String checkinDate, String checkoutDate, String paymentStatus) {
+        this.id = id;
+        this.guest = guest;
+        this.room = room;
+        this.checkinDate = checkinDate;
+        this.checkoutDate = checkoutDate;
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public String getCheckinDate() {
+        return checkinDate;
+    }
+
+    public String getCheckoutDate() {
+        return checkoutDate;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+}
+
+class Guest {
+    private String name;
+
+    public Guest(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
